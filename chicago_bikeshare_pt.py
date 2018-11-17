@@ -307,7 +307,7 @@ def find_median(trip_duration_list):
     if list_half_index%2 == 0:
         median_trip = (trip_duration_list[int(list_half_index)-1] + trip_duration_list[int(list_half_index)])/2
     else:
-        median_trip = trip_duration_list[int(list_half_index)-1]
+        median_trip = trip_duration_list[int(list_half_index)]
     return median_trip
 
 min_trip = find_min(trip_duration_list)
