@@ -3,7 +3,6 @@
 # Começando com os imports
 import csv
 import matplotlib.pyplot as plt
-import statistics
 
 # Vamos ler os dados como uma lista
 print("Lendo o documento...")
@@ -54,7 +53,8 @@ for index in range(1,21):
 input("Aperte Enter para continuar...")
 # TAREFA 3
 # TODO: Crie uma função para adicionar as colunas(features) de uma lista em outra lista, na mesma ordem
-"""
+def column_to_list(data, index):
+    """
     column_to_list: converte dados da coluna em uma lista
     
     Argumentos:
@@ -62,8 +62,7 @@ input("Aperte Enter para continuar...")
 
     Retorna:
         Uma lista extraída da coluna da base de dados
-"""  
-def column_to_list(data, index):
+    """
     column_list = []
     # Dica: Você pode usar um for para iterar sobre as amostras, pegar a feature pelo seu índice, e dar append para uma lista
     for colomn_data in data:
@@ -89,10 +88,10 @@ male = 0
 female = 0
 
 #Contagem de usuários Masculinos e Femininos
-for data_s in data_list:
-    if data_s[-2] == "Male":
+for gender in data_list:
+    if gender[-2] == "Male":
         male += 1
-    elif data_s[-2] == "Female":
+    elif gender[-2] == "Female":
         female += 1
 
 # Verificando o resultado
@@ -108,8 +107,8 @@ input("Aperte Enter para continuar...")
 # TAREFA 5
 # TODO: Crie uma função para contar os gêneros. Retorne uma lista.
 # Isso deveria retornar uma lista com [count_male, count_female] (exemplo: [10, 15] significa 10 Masculinos, 15 Femininos)
-
-"""
+def count_gender(data_list):
+    """
     count_gender: conta a quandidade de usuários masculinos e femininos e retorna em uma lista com estes dados
     
     Argumentos:
@@ -117,8 +116,7 @@ input("Aperte Enter para continuar...")
 
     Retorna:
         Uma lista com a quantidade de usuários masculinos e femininos
-""" 
-def count_gender(data_list):
+    """
     male = 0
     female = 0
     for data in data_list:
@@ -128,7 +126,8 @@ def count_gender(data_list):
             female += 1
     return [male, female]
 
-"""
+def count_user_types(data_list):
+    """
     count_user_types: conta a quandidade de tipos de usuários e retorna em uma lista com estes dados
     
     Argumentos:
@@ -136,16 +135,18 @@ def count_gender(data_list):
 
     Retorna:
         Uma lista com a quantidade de usuários Customer e Subscriber
-""" 
-def count_user_types(data_list):
+    """
     customer = 0
     subscriber = 0
+    dependent = 0
     for data in data_list:
         if data[-3] == "Customer":
             customer += 1
         elif data[-3] == "Subscriber":
             subscriber += 1
-    return [customer, subscriber]
+        elif data[-3] == "Dependent":
+            dependent+= 1
+    return [customer, subscriber,dependent]
 
 print("\nTAREFA 5: Imprimindo o resultado de count_gender")
 print(count_gender(data_list))
@@ -161,8 +162,8 @@ input("Aperte Enter para continuar...")
 # TAREFA 6
 # TODO: Crie uma função que pegue o gênero mais popular, e retorne este gênero como uma string.
 # Esperamos ver "Male", "Female", ou "Equal" como resposta.
-
-"""
+def most_popular_gender(data_list):
+    """
     most_popular_gender: verifica e retorna gênero dominante que usa o serviço
     
     Argumentos:
@@ -170,8 +171,7 @@ input("Aperte Enter para continuar...")
 
     Retorna:
         Uma string com o gênero dominante que usa o serviço
-""" 
-def most_popular_gender(data_list):
+    """
     answer = ""
     gender_list = count_gender(data_list)
     if gender_list[0] > gender_list[1]:
@@ -209,7 +209,7 @@ input("Aperte Enter para continuar...")
 #Plota o gráfico que relaciona a quantidade do tipo de usuários
 print("\nTAREFA 7: Verifique o gráfico!")
 user_type_list = column_to_list(data_list, -3)
-types = ["Customer", "Subscriber"]
+types = ["Customer", "Subscriber", "Dependent"]
 quantity = count_user_types(data_list)
 y_pos = list(range(len(types)))
 plt.bar(y_pos, quantity)
@@ -238,29 +238,82 @@ input("Aperte Enter para continuar...")
 # TODO: Ache a duração de viagem Mínima, Máxima, Média, e Mediana.
 # Você não deve usar funções prontas para isso, como max() e min().
 trip_duration_list = column_to_list(data_list, 2)
-#min_trip = 0.
-#max_trip = 0.
+min_trip = 0.
+max_trip = 0.
 mean_trip = 0.
 median_trip = 0.
 
-#Inicializa as variáveis min_trip e max_trip com primeira duração da base de dados
-min_trip = float(trip_duration_list[0])
-max_trip = float(trip_duration_list[0])
+def find_max(trip_duration_list):
+    """
+    find_max: acha a viagem mais longa realizada
+    
+    Argumentos:
+        param: coluna da duração das viagens
 
-#Máxima e Mínima
-for trip_time in trip_duration_list:
-    if float(trip_time) <= min_trip:
-        min_trip = float(trip_time)
-    elif float(trip_time) >= max_trip:
-        max_trip = float(trip_time)
-    mean_trip += float(trip_time)
+    Retorna:
+        duranção da viagem mais longa realizada
+    """
+    max_trip = float(trip_duration_list[0])
+    for trip_time in trip_duration_list:
+        if float(trip_time) >= max_trip:
+            max_trip = float(trip_time)
+    return max_trip
 
-#Média
-mean_trip = mean_trip/float(len(trip_duration_list))
+def find_min(trip_duration_list):
+    """
+    find_min: acha a viagem mais curta realizada
+    
+    Argumentos:
+        param: coluna da duração das viagens
 
-#Mediana
-trip_duration_list = (float(element) for element in trip_duration_list)
-median_trip = statistics.median(trip_duration_list)
+    Retorna:
+        duranção da viagem mais curta realizada
+    """
+    min_trip = float(trip_duration_list[0])
+    for trip_time in trip_duration_list:
+        if float(trip_time) <= min_trip:
+            min_trip = float(trip_time)
+    return min_trip
+
+def find_mean(trip_duration_list):
+    """
+    find_mean: acha a duração média das viagens realizadas
+    
+    Argumentos:
+        param: coluna da duração das viagens
+
+    Retorna:
+        duranção média das viagens realizadas
+    """
+    mean_trip = .0
+    for trip_duration in trip_duration_list:
+        mean_trip += float(trip_duration)
+    mean_trip = mean_trip/len(trip_duration_list)
+    return mean_trip
+
+def find_median(trip_duration_list):
+    """
+    find_mean: acha a mediana das viagens realizadas
+    
+    Argumentos:
+        param: coluna da duração das viagens
+
+    Retorna:
+        mediana das viagens realizadas
+    """
+    median_trip = .0
+    trip_duration_list = sorted(float(element) for element in trip_duration_list)
+    list_half_index = len(trip_duration_list)/2
+    if list_half_index%2 == 0:
+        median_trip = (trip_duration_list[int(list_half_index)-1] + trip_duration_list[int(list_half_index)])/2
+    else:
+        median_trip = trip_duration_list[int(list_half_index)-1]
+    return median_trip
+
+min_trip = find_min(trip_duration_list)
+max_trip = find_max(trip_duration_list)
+mean_trip = find_mean(trip_duration_list)
+median_trip = find_median(trip_duration_list)
 
 print("\nTAREFA 9: Imprimindo o mínimo, máximo, média, e mediana")
 print("Min: ", min_trip, "Max: ", max_trip, "Média: ", mean_trip, "Mediana: ", median_trip)
@@ -308,7 +361,8 @@ print("Você vai encarar o desafio? (yes ou no)")
 answer = "yes"
 
 
-"""
+def count_items(column_list):
+    """
     count_items: contabiliza os itens, indentificando os elementos unicos na coluna passada
     
     Argumentos:
@@ -316,8 +370,7 @@ answer = "yes"
 
     Retorna:
         Uma string com o gênero dominante que usa o serviço
-""" 
-def count_items(column_list):
+    """
     item_types = []
     count_items = []
     
