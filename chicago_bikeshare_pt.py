@@ -41,9 +41,9 @@ input("Aperte Enter para continuar...")
 # TODO: Imprima o `gênero` das primeiras 20 linhas
 
 print("\nTAREFA 2: Imprimindo o gênero das primeiras 20 amostras")
-for index in range(1,21):
-    if data_list[index][6] != "":
-        print(data_list[index][6])
+for line in data_list[:20]:
+    if line[6] != "":
+        print(line[6])
     else:
         print("None")
 
@@ -58,8 +58,8 @@ def column_to_list(data, index):
     column_to_list: converte dados da coluna em uma lista
     
     Argumentos:
-        param: lista de dados
-
+        data: banco de dados 
+        index: index da coluna do banco de dados
     Retorna:
         Uma lista extraída da coluna da base de dados
     """
@@ -112,7 +112,7 @@ def count_gender(data_list):
     count_gender: conta a quandidade de usuários masculinos e femininos e retorna em uma lista com estes dados
     
     Argumentos:
-        param: lista de dados
+        data_list: lista de dados
 
     Retorna:
         Uma lista com a quantidade de usuários masculinos e femininos
@@ -131,7 +131,7 @@ def count_user_types(data_list):
     count_user_types: conta a quandidade de tipos de usuários e retorna em uma lista com estes dados
     
     Argumentos:
-        param: lista de dados
+        data_list: lista de dados
 
     Retorna:
         Uma lista com a quantidade de usuários Customer e Subscriber
@@ -167,7 +167,7 @@ def most_popular_gender(data_list):
     most_popular_gender: verifica e retorna gênero dominante que usa o serviço
     
     Argumentos:
-        param: lista de dados
+        data_list: lista de dados
 
     Retorna:
         Uma string com o gênero dominante que usa o serviço
@@ -248,7 +248,7 @@ def find_max(trip_duration_list):
     find_max: acha a viagem mais longa realizada
     
     Argumentos:
-        param: coluna da duração das viagens
+        trip_duration_list: coluna da duração das viagens
 
     Retorna:
         duranção da viagem mais longa realizada
@@ -264,7 +264,7 @@ def find_min(trip_duration_list):
     find_min: acha a viagem mais curta realizada
     
     Argumentos:
-        param: coluna da duração das viagens
+        trip_duration_list: coluna da duração das viagens
 
     Retorna:
         duranção da viagem mais curta realizada
@@ -280,7 +280,7 @@ def find_mean(trip_duration_list):
     find_mean: acha a duração média das viagens realizadas
     
     Argumentos:
-        param: coluna da duração das viagens
+        trip_duration_list: coluna da duração das viagens
 
     Retorna:
         duranção média das viagens realizadas
@@ -296,7 +296,7 @@ def find_median(trip_duration_list):
     find_mean: acha a mediana das viagens realizadas
     
     Argumentos:
-        param: coluna da duração das viagens
+        trip_duration_list: coluna da duração das viagens
 
     Retorna:
         mediana das viagens realizadas
@@ -366,7 +366,7 @@ def count_items(column_list):
     count_items: contabiliza os itens, indentificando os elementos unicos na coluna passada
     
     Argumentos:
-        param: lista obtidad a partir da lista de dados
+        column_list: lista obtidad a partir da lista de dados
 
     Retorna:
         Uma string com o gênero dominante que usa o serviço
